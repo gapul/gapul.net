@@ -49,15 +49,20 @@ git add -A && git commit && git push   # push で自動デプロイ
 
 ## コンタクトフォーム
 
-`/contact` のフォームは Cloudflare Turnstile で認証し、Cloudflare Pages Functions
-(`functions/api/contact.js`)が受けて自宅の ntfy にプッシュ通知する。
+`/contact` のフォーム(全項目必須: なまえ / メール / 件名 / メッセージ)は
+Cloudflare Turnstile で認証し、Pages Functions(`functions/api/contact.js`)が受けて
+**メール送信(Cloudflare Email Service)+ ntfy プッシュ通知**する。
+Tor 出口ノード(国コード T1)からの送信は拒否。
 CF Pages の環境変数に以下が必要:
 
-- `NTFY_URL` — 例: `https://ntfy.gapul.net/contact`
-- `NTFY_TOKEN` — ntfy のアクセストークン(`tk_...`)
-- `TURNSTILE_SECRET` — Turnstile のシークレットキー(Functions 用)
+- `TURNSTILE_SECRET` — Turnstile のシークレットキー(必須)
 - `PUBLIC_TURNSTILE_SITE_KEY` — Turnstile のサイトキー(ビルド時に埋め込み)
+- `CF_ACCOUNT_ID` / `EMAIL_API_TOKEN` / `EMAIL_FROM` / `EMAIL_TO` — メール送信用。
+  事前に CF dashboard → Email Sending で gapul.net をオンボード(SPF/DKIM/DMARC の
+  DNSレコード追加。**既存のメール転送 MX は触らないこと**)し、送信権限トークンを発行
+- `NTFY_URL` / `NTFY_TOKEN` — ntfy 通知用(任意併用)
 
+メールと ntfy のどちらか片方でも配送できれば成功扱い。
 Turnstile のキーは CF dashboard → Turnstile でウィジェット(ドメイン gapul.net)を
 作って発行する。未設定時はテストキー(常にパス)でビルドされる。
 honeypot(company フィールド)でも bot は成功を装って捨てる。ローカルの `pnpm dev` では

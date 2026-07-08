@@ -29,6 +29,7 @@ const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '1x0000000000000000
     <input
       name="name"
       type="text"
+      required
       maxlength="200"
       class="mt-2 w-full border-b border-line bg-transparent pb-2 outline-none focus:border-accent"
     />
@@ -39,6 +40,18 @@ const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '1x0000000000000000
     <input
       name="email"
       type="email"
+      required
+      maxlength="200"
+      class="mt-2 w-full border-b border-line bg-transparent pb-2 outline-none focus:border-accent"
+    />
+  </label>
+
+  <label class="block">
+    <span class="font-mono text-xs text-muted">{t.contactSubject}</span>
+    <input
+      name="subject"
+      type="text"
+      required
       maxlength="200"
       class="mt-2 w-full border-b border-line bg-transparent pb-2 outline-none focus:border-accent"
     />
