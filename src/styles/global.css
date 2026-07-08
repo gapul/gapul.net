@@ -6,8 +6,8 @@
   --color-paper: #dcdcdf;
   --color-muted: #7c7c84;
   --color-accent: #8fa8ff;
-  --font-sans: 'Hiragino Sans', 'Noto Sans JP', system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', 'SF Mono', ui-monospace, monospace;
+  --font-sans: 'Noto Sans JP Variable', 'Hiragino Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', 'SF Mono', ui-monospace, monospace;
 }
 
 html {
