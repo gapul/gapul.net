@@ -20,13 +20,13 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
       </svg>
     </a>
   </div>
-  <ul class="max-w-2xl space-y-3 pb-24">
+  <ul class="max-w-2xl space-y-5 pb-24">
     {posts.map((post) => (
-      <li class="flex flex-wrap items-baseline gap-x-4">
-        <time datetime={post.data.pubDate.toISOString()} class="font-mono text-sm text-muted">
+      <li class="flex flex-wrap items-baseline gap-x-5">
+        <time datetime={post.data.pubDate.toISOString()} class="font-mono text-muted">
           {formatDateJST(post.data.pubDate)}
         </time>
-        <a href={`/blog/${post.id}/`} class="hover:text-accent">{post.data.title}</a>
+        <a href={`/blog/${post.id}/`} class="text-lg font-bold hover:text-accent">{post.data.title}</a>
       </li>
     ))}
   </ul>
