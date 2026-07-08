@@ -1,5 +1,7 @@
 ---
-import '@fontsource-variable/noto-sans-jp';
+import '@fontsource/zen-kaku-gothic-new/400.css';
+import '@fontsource/zen-kaku-gothic-new/500.css';
+import '@fontsource/zen-kaku-gothic-new/700.css';
 import '@fontsource-variable/jetbrains-mono';
 import '../styles/global.css';
 import { SITE } from '../lib/site';
@@ -19,7 +21,6 @@ const path = Astro.url.pathname;
 const home = lang === 'en' ? '/en/' : '/';
 const works = lang === 'en' ? '/en/works/' : '/works/';
 const blog = lang === 'en' ? '/en/blog/' : '/blog/';
-const contact = lang === 'en' ? '/en/contact/' : '/contact/';
 ---
 
 <!doctype html>
@@ -53,7 +54,6 @@ const contact = lang === 'en' ? '/en/contact/' : '/contact/';
         <a href={home} class:list={['hover:text-paper', path === home && 'text-paper']}>home</a>
         <a href={works} class:list={['hover:text-paper', path.startsWith(works) && 'text-paper']}>works</a>
         <a href={blog} class:list={['hover:text-paper', (path.startsWith('/blog') || path.startsWith('/en/blog')) && 'text-paper']}>blog</a>
-        <a href={contact} class:list={['hover:text-paper', path.startsWith(contact) && 'text-paper']}>contact</a>
         {altHref && (
           <a href={altHref} class="font-mono text-xs" aria-label={lang === 'ja' ? 'Switch to English' : '日本語に切り替え'}>
             <span class:list={[lang === 'ja' ? 'text-paper' : 'hover:text-paper']}>JP</span>

@@ -6,7 +6,7 @@
   --color-paper: #dcdcdf;
   --color-muted: #7c7c84;
   --color-accent: #8fa8ff;
-  --font-sans: 'Noto Sans JP Variable', 'Hiragino Sans', system-ui, sans-serif;
+  --font-sans: 'Zen Kaku Gothic New', 'Hiragino Sans', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono Variable', 'SF Mono', ui-monospace, monospace;
 }
 
@@ -17,6 +17,8 @@ html {
 
 body {
   font-family: var(--font-sans);
+  /* Zen Kaku Gothic New の400はダーク背景だと細いので本文は500 */
+  font-weight: 500;
 }
 
 ::selection {
