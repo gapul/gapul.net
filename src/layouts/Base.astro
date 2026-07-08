@@ -54,21 +54,11 @@ const contact = lang === 'en' ? '/en/contact/' : '/contact/';
         <a href="/blog" class:list={['hover:text-paper', path.startsWith('/blog') && 'text-paper']}>blog</a>
         <a href={contact} class:list={['hover:text-paper', path.startsWith(contact) && 'text-paper']}>contact</a>
         {altHref && (
-          <span class="font-mono text-xs">
-            {lang === 'ja' ? (
-              <>
-                <span class="text-paper">JP</span>
-                <span> / </span>
-                <a href={altHref} class="hover:text-paper">EN</a>
-              </>
-            ) : (
-              <>
-                <a href={altHref} class="hover:text-paper">JP</a>
-                <span> / </span>
-                <span class="text-paper">EN</span>
-              </>
-            )}
-          </span>
+          <a href={altHref} class="font-mono text-xs" aria-label={lang === 'ja' ? 'Switch to English' : '日本語に切り替え'}>
+            <span class:list={[lang === 'ja' ? 'text-paper' : 'hover:text-paper']}>JP</span>
+            <span> / </span>
+            <span class:list={[lang === 'en' ? 'text-paper' : 'hover:text-paper']}>EN</span>
+          </a>
         )}
       </nav>
     </header>
