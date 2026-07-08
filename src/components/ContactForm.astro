@@ -1,0 +1,63 @@
+---
+import { STRINGS, type Locale } from '../lib/i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = STRINGS[locale];
+const back = locale === 'en' ? '/en/contact/' : '/contact/';
+---
+
+<p class="max-w-md leading-relaxed text-muted">{t.contactLead}</p>
+
+<p id="form-sent" hidden class="mt-8 max-w-md text-accent">{t.contactSent}</p>
+<p id="form-error" hidden class="mt-8 max-w-md text-red-400">{t.contactError}</p>
+
+<form method="post" action="/api/contact" class="mt-10 max-w-md space-y-8 pb-24">
+  <input type="hidden" name="back" value={back} />
+  <!-- honeypot(botよけ)。人間には見えない -->
+  <p class="hidden" aria-hidden="true">
+    <label>Company <input name="company" tabindex="-1" autocomplete="off" /></label>
+  </p>
+
+  <label class="block">
+    <span class="font-mono text-xs text-muted">{t.contactName}</span>
+    <input
+      name="name"
+      type="text"
+      maxlength="200"
+      class="mt-2 w-full border-b border-line bg-transparent pb-2 outline-none focus:border-accent"
+    />
+  </label>
+
+  <label class="block">
+    <span class="font-mono text-xs text-muted">{t.contactEmail}</span>
+    <input
+      name="email"
+      type="email"
+      maxlength="200"
+      class="mt-2 w-full border-b border-line bg-transparent pb-2 outline-none focus:border-accent"
+    />
+  </label>
+
+  <label class="block">
+    <span class="font-mono text-xs text-muted">{t.contactMessage}</span>
+    <textarea
+      name="message"
+      required
+      rows="6"
+      maxlength="5000"
+      class="mt-2 w-full resize-y border-b border-line bg-transparent pb-2 outline-none focus:border-accent"></textarea>
+  </label>
+
+  <button type="submit" class="font-mono hover:text-accent">{t.contactSend}</button>
+</form>
+
+<script>
+  // 送信後のリダイレクト(?sent=1 / ?error=1)を見て結果メッセージを出す
+  const params = new URLSearchParams(location.search);
+  if (params.has('sent')) document.getElementById('form-sent')!.hidden = false;
+  if (params.has('error')) document.getElementById('form-error')!.hidden = false;
+</script>

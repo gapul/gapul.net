@@ -9,15 +9,17 @@ interface Props {
 const { locale } = Astro.props;
 const t = STRINGS[locale];
 const works = locale === 'en' ? '/en/works/' : '/works/';
+const contact = locale === 'en' ? '/en/contact/' : '/contact/';
 const nav = [
   { index: '01', label: 'works', href: works },
   { index: '02', label: 'blog', href: '/blog' },
+  { index: '03', label: 'contact', href: contact },
 ];
 ---
 
 <section class="relative flex min-h-[calc(100dvh-11rem)] flex-col pt-14 sm:pt-20">
   <!-- 右端の縦書きタグライン -->
-  <p class="tagline absolute top-10 right-0 hidden font-mono text-sm tracking-widest text-muted sm:block">
+  <p class="tagline absolute top-10 right-0 hidden text-sm text-muted sm:block">
     {t.tagline}
   </p>
 
@@ -48,7 +50,12 @@ const nav = [
 </section>
 
 <style>
+  /* 日本語の縦組み。句読点の縦書きグリフ(vert)を持つ和文フォントで組む */
   .tagline {
     writing-mode: vertical-rl;
+    text-orientation: mixed;
+    font-family: var(--font-sans);
+    letter-spacing: 0.25em;
+    font-feature-settings: 'vert' 1;
   }
 </style>

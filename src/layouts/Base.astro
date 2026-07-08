@@ -18,6 +18,7 @@ const canonical = new URL(Astro.url.pathname, SITE.url);
 const path = Astro.url.pathname;
 const home = lang === 'en' ? '/en/' : '/';
 const works = lang === 'en' ? '/en/works/' : '/works/';
+const contact = lang === 'en' ? '/en/contact/' : '/contact/';
 ---
 
 <!doctype html>
@@ -51,6 +52,7 @@ const works = lang === 'en' ? '/en/works/' : '/works/';
         <a href={home} class:list={['hover:text-paper', path === home && 'text-paper']}>home</a>
         <a href={works} class:list={['hover:text-paper', path.startsWith(works) && 'text-paper']}>works</a>
         <a href="/blog" class:list={['hover:text-paper', path.startsWith('/blog') && 'text-paper']}>blog</a>
+        <a href={contact} class:list={['hover:text-paper', path.startsWith(contact) && 'text-paper']}>contact</a>
         {altHref && (
           <a href={altHref} class="font-mono text-xs hover:text-paper">
             {lang === 'ja' ? 'en' : 'ja'}

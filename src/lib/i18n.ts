@@ -8,6 +8,13 @@ export const STRINGS = {
     intro:
       'インタラクティブな作品とツールをつくっています。プロジェクション、ネイティブアプリ、自宅サーバーまわりなど。',
     blogDescription: 'gapul のブログ',
+    contactLead: '仕事の相談、作品の感想、なんでもどうぞ。',
+    contactName: 'なまえ',
+    contactEmail: 'メールアドレス(返信が欲しい場合)',
+    contactMessage: 'メッセージ',
+    contactSend: '送信 →',
+    contactSent: '送信しました。ありがとうございます。',
+    contactError: '送信に失敗しました。時間をおいて試すか、メールでどうぞ。',
   },
   en: {
     description: "gapul's portfolio — things made, fun had.",
@@ -15,6 +22,13 @@ export const STRINGS = {
     intro:
       'I make interactive works and tools: projection art, native apps, and homelab stuff.',
     blogDescription: "gapul's blog",
+    contactLead: 'Work inquiries, feedback, anything welcome.',
+    contactName: 'Name',
+    contactEmail: 'Email (if you want a reply)',
+    contactMessage: 'Message',
+    contactSend: 'Send →',
+    contactSent: 'Sent. Thank you!',
+    contactError: 'Failed to send. Please try again later or email me.',
   },
 } as const satisfies Record<Locale, Record<string, string>>;
 

@@ -47,6 +47,17 @@ git add -A && git commit && git push   # push で自動デプロイ
 `publish: true` を外して再実行すると記事は取り下げられる(`source: obsidian` の
 記事だけが対象。手書きの md は触らない)。
 
+## コンタクトフォーム
+
+`/contact` のフォームは Cloudflare Pages Functions(`functions/api/contact.js`)が受けて
+自宅の ntfy にプッシュ通知する。CF Pages の環境変数に以下が必要:
+
+- `NTFY_URL` — 例: `https://ntfy.gapul.net/contact`
+- `NTFY_TOKEN` — ntfy のアクセストークン(`tk_...`)
+
+honeypot(company フィールド)で bot は成功を装って捨てる。ローカルの `pnpm dev` では
+Functions は動かないので、送信テストはデプロイ後かpreview環境で行う。
+
 ## デプロイ
 
 GitHub `gapul/gapul.net` → Cloudflare Pages(build: `pnpm build`, output: `dist`)。
