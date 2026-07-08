@@ -9,31 +9,46 @@ interface Props {
 const { locale } = Astro.props;
 const t = STRINGS[locale];
 const works = locale === 'en' ? '/en/works/' : '/works/';
+const nav = [
+  { index: '01', label: 'works', href: works },
+  { index: '02', label: 'blog', href: '/blog' },
+];
 ---
 
-<section class="flex min-h-[calc(100dvh-11rem)] flex-col justify-between pt-14 sm:pt-20">
-  <div>
-    <h1 class="font-mono text-[clamp(4.5rem,16vw,12rem)] leading-none font-bold tracking-tight">
-      gapul
-    </h1>
-    <p class="mt-5 text-muted">{t.tagline}</p>
-  </div>
+<section class="relative flex min-h-[calc(100dvh-11rem)] flex-col pt-14 sm:pt-20">
+  <!-- 右端の縦書きタグライン -->
+  <p class="tagline absolute top-10 right-0 hidden font-mono text-sm tracking-widest text-muted sm:block">
+    {t.tagline}
+  </p>
 
-  <nav class="space-y-3 py-16 text-lg">
-    <p><a href={works} class="hover:text-accent">works →</a></p>
-    <p><a href="/blog" class="hover:text-accent">blog →</a></p>
+  <p class="max-w-sm leading-relaxed">{t.intro}</p>
+
+  <nav class="mt-14 space-y-4">
+    {nav.map((item) => (
+      <p>
+        <span class="mr-4 font-mono text-xs text-muted">{item.index}</span>
+        <a href={item.href} class="text-lg hover:text-accent">{item.label} →</a>
+      </p>
+    ))}
   </nav>
 
-  <div class="flex flex-wrap items-end justify-between gap-x-12 gap-y-8 pb-4">
-    <p class="max-w-md leading-relaxed">{t.intro}</p>
-    <ul class="flex flex-wrap gap-x-6 gap-y-2 text-sm">
-      {LINKS.map((link) => (
-        <li>
-          <a href={link.href} target="_blank" rel="noopener me" class="text-muted underline underline-offset-4 hover:text-accent">
-            {link.label}
-          </a>
-        </li>
-      ))}
-    </ul>
-  </div>
+  <ul class="mt-14 ml-auto flex flex-wrap gap-x-6 gap-y-2 text-sm sm:mt-0">
+    {LINKS.map((link) => (
+      <li>
+        <a href={link.href} target="_blank" rel="noopener me" class="text-muted underline underline-offset-4 hover:text-accent">
+          {link.label}
+        </a>
+      </li>
+    ))}
+  </ul>
+
+  <h1 class="mt-auto pt-16 font-mono text-[clamp(4.5rem,17vw,15rem)] leading-[1.1] font-bold tracking-tight whitespace-nowrap">
+    gapul<span class="text-accent">.</span>
+  </h1>
 </section>
+
+<style>
+  .tagline {
+    writing-mode: vertical-rl;
+  }
+</style>

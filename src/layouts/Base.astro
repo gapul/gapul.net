@@ -45,9 +45,9 @@ const works = lang === 'en' ? '/en/works/' : '/works/';
     <meta name="generator" content={Astro.generator} />
   </head>
   <body class="min-h-dvh antialiased">
-    <header class="flex items-baseline justify-between px-6 pt-8 text-sm sm:px-12">
+    <header class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 px-6 pt-8 text-sm sm:px-12">
       <a href={home} class="font-mono text-muted hover:text-paper">gapul.net</a>
-      <nav class="flex items-baseline gap-5 text-muted">
+      <nav class="flex items-baseline gap-4 text-muted sm:gap-5">
         <a href={home} class:list={['hover:text-paper', path === home && 'text-paper']}>home</a>
         <a href={works} class:list={['hover:text-paper', path.startsWith(works) && 'text-paper']}>works</a>
         <a href="/blog" class:list={['hover:text-paper', path.startsWith('/blog') && 'text-paper']}>blog</a>
