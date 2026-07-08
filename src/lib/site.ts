@@ -9,5 +9,5 @@ export const SITE = {
 export const LINKS = [
   { label: 'GitHub', href: 'https://github.com/gapul', note: 'コードはだいたいここ' },
   { label: 'Matrix', href: 'https://matrix.to/#/@gapul:gapul.net', note: '@gapul:gapul.net' },
-  { label: 'Email', href: 'mailto:yuk8337@gmail.com', note: 'yuk8337@gmail.com' },
+  { label: 'X', href: 'https://x.com/gapul1729', note: '@gapul1729' },
 ] as const;
