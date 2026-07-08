@@ -23,6 +23,9 @@ const nav = [
     {t.tagline}
   </p>
 
+  <!-- スマホでは縦書きタグラインが出ないので横書きで表示 -->
+  <p class="mb-6 text-sm text-muted sm:hidden">{t.tagline}</p>
+
   <p class="max-w-sm leading-relaxed">{t.intro}</p>
 
   <nav class="mt-14 space-y-4">
