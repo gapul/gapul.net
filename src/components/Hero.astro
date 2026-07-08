@@ -1,5 +1,5 @@
 ---
-import { LINKS } from '../lib/site';
+import { LINKS, RSS } from '../lib/site';
 import { STRINGS, type Locale } from '../lib/i18n';
 
 interface Props {
@@ -38,12 +38,12 @@ const nav = [
   </nav>
 
   <ul class="mt-auto mb-8 ml-auto flex gap-6 pt-14 sm:absolute sm:right-0 sm:bottom-8 sm:mb-0 sm:pt-0">
-    {LINKS.map((link) => (
+    {[...LINKS, RSS].map((link) => (
       <li>
         <a
           href={link.href}
-          target="_blank"
-          rel="noopener me"
+          target={link.href.startsWith('http') ? '_blank' : undefined}
+          rel={link.href.startsWith('http') ? 'noopener me' : undefined}
           aria-label={link.label}
           class="block text-muted transition-colors hover:text-accent"
         >
