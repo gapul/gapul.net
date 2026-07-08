@@ -91,6 +91,7 @@ for (const file of vaultFiles.filter((f) => f.endsWith('.md'))) {
     title: fm.title || base,
     description: fm.description,
     pubDate: fm.pubDate || fm.date || formatDateJST(mtime),
+    lang: fm.lang === 'en' ? 'en' : undefined,
   });
 }
 
@@ -127,6 +128,7 @@ for (const note of notes) {
     `title: ${yamlQuote(note.title)}`,
     note.description ? `description: ${yamlQuote(note.description)}` : null,
     `pubDate: ${note.pubDate}`,
+    note.lang ? `lang: ${note.lang}` : null,
     'source: obsidian',
   ].filter(Boolean);
   await writeFile(

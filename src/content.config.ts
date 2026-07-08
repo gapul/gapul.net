@@ -8,6 +8,7 @@ const blog = defineCollection({
     description: z.string().optional(),
     pubDate: z.coerce.date(),
     draft: z.boolean().default(false),
+    lang: z.enum(['ja', 'en']).default('ja'),
     source: z.enum(['obsidian']).optional(),
   }),
 });
@@ -17,6 +18,7 @@ const works = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string(),
+    descriptionEn: z.string().optional(),
     tags: z.array(z.string()).default([]),
     repo: z.string().url().optional(),
     url: z.string().url().optional(),

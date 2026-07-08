@@ -1,0 +1,33 @@
+---
+import { LINKS } from '../lib/site';
+import { STRINGS, type Locale } from '../lib/i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = STRINGS[locale];
+const works = locale === 'en' ? '/en/works/' : '/works/';
+---
+
+<section class="pt-24 pb-24 sm:pt-32">
+  <h1 class="font-mono text-6xl font-bold tracking-tight sm:text-7xl">gapul</h1>
+  <p class="mt-6 text-muted">{t.tagline}</p>
+  <p class="mt-8 max-w-md leading-relaxed">{t.intro}</p>
+
+  <p class="mt-10 flex flex-wrap gap-x-6 text-sm">
+    <a href={works} class="hover:text-accent">works →</a>
+    <a href="/blog" class="hover:text-accent">blog →</a>
+  </p>
+
+  <ul class="mt-10 flex flex-wrap gap-x-6 gap-y-2 text-sm">
+    {LINKS.map((link) => (
+      <li>
+        <a href={link.href} target="_blank" rel="noopener me" class="text-muted underline underline-offset-4 hover:text-accent">
+          {link.label}
+        </a>
+      </li>
+    ))}
+  </ul>
+</section>

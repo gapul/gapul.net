@@ -12,17 +12,17 @@ const { post } = Astro.props;
 const { Content } = await render(post);
 ---
 
-<Base title={post.data.title} description={post.data.description}>
-  <article class="py-16">
-    <header class="mb-10 border-b border-line pb-8">
+<Base title={post.data.title} description={post.data.description} lang={post.data.lang}>
+  <article class="pt-20 pb-16">
+    <header class="mb-10">
       <time datetime={post.data.pubDate.toISOString()} class="font-mono text-sm text-muted">
         {formatDateJST(post.data.pubDate)}
       </time>
-      <h1 class="mt-2 text-3xl font-bold tracking-tight">{post.data.title}</h1>
+      <h1 class="mt-2 text-2xl font-bold tracking-tight">{post.data.title}</h1>
     </header>
-    <div class="prose prose-invert max-w-none prose-a:text-accent prose-code:text-teal prose-pre:border prose-pre:border-line prose-pre:bg-ink-2">
+    <div class="prose prose-invert max-w-none prose-a:text-accent">
       <Content />
     </div>
   </article>
-  <p class="pb-8"><a href="/blog" class="font-mono text-sm text-muted hover:text-paper">← blog</a></p>
+  <p class="pb-24"><a href="/blog" class="font-mono text-sm text-muted hover:text-paper">← blog</a></p>
 </Base>

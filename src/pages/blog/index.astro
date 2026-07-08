@@ -1,7 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
-import Pane from '../../components/Pane.astro';
 import { formatDateJST } from '../../lib/date';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
@@ -10,18 +9,15 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 ---
 
 <Base title="Blog" description="gapul のブログ">
-  <div class="py-16">
-    <Pane title="ls blog/">
-      <ul class="space-y-4">
-        {posts.map((post) => (
-          <li class="flex flex-wrap items-baseline gap-x-4">
-            <time datetime={post.data.pubDate.toISOString()} class="font-mono text-sm text-muted">
-              {formatDateJST(post.data.pubDate)}
-            </time>
-            <a href={`/blog/${post.id}/`} class="font-bold hover:text-accent">{post.data.title}</a>
-          </li>
-        ))}
-      </ul>
-    </Pane>
-  </div>
+  <h1 class="pt-20 pb-10 font-mono text-2xl font-bold">blog</h1>
+  <ul class="space-y-3 pb-24">
+    {posts.map((post) => (
+      <li class="flex flex-wrap items-baseline gap-x-4">
+        <time datetime={post.data.pubDate.toISOString()} class="font-mono text-sm text-muted">
+          {formatDateJST(post.data.pubDate)}
+        </time>
+        <a href={`/blog/${post.id}/`} class="hover:text-accent">{post.data.title}</a>
+      </li>
+    ))}
+  </ul>
 </Base>

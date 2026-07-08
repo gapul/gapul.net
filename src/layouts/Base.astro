@@ -1,26 +1,37 @@
 ---
 import '../styles/global.css';
 import { SITE } from '../lib/site';
+import { STRINGS, type Locale } from '../lib/i18n';
 
 interface Props {
   title?: string;
   description?: string;
+  lang?: Locale;
+  altHref?: string; // 対になる言語版ページ(あればスイッチャーを出す)
 }
 
-const { title, description = SITE.description } = Astro.props;
+const { title, lang = 'ja', description = STRINGS[lang].description, altHref } = Astro.props;
 const pageTitle = title ? `${title} | ${SITE.title}` : SITE.title;
 const canonical = new URL(Astro.url.pathname, SITE.url);
 const path = Astro.url.pathname;
+const home = lang === 'en' ? '/en/' : '/';
+const works = lang === 'en' ? '/en/works/' : '/works/';
 ---
 
 <!doctype html>
-<html lang="ja">
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    {altHref && (
+      <>
+        <link rel="alternate" hreflang={lang === 'ja' ? 'en' : 'ja'} href={new URL(altHref, SITE.url)} />
+        <link rel="alternate" hreflang={lang} href={canonical} />
+      </>
+    )}
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="alternate" type="application/rss+xml" title={SITE.title} href="/rss.xml" />
     <meta property="og:type" content="website" />
@@ -31,80 +42,25 @@ const path = Astro.url.pathname;
     <meta name="twitter:card" content="summary" />
     <meta name="generator" content={Astro.generator} />
   </head>
-  <body class="min-h-dvh pb-16 antialiased">
-    <header class="sticky top-0 z-10 border-b border-line bg-ink/90 backdrop-blur">
-      <div class="mx-auto flex max-w-4xl items-center justify-between px-6 py-4 font-mono text-sm">
-        <a href="/" class="font-bold text-paper hover:text-accent">gapul.net</a>
-        <nav class="flex gap-5 text-muted">
-          <a href="/#works" class="hover:text-paper">works</a>
-          <a href="/blog" class:list={['hover:text-paper', path.startsWith('/blog') && 'text-accent']}>blog</a>
-          <a href="/#links" class="hover:text-paper">links</a>
-        </nav>
-      </div>
+  <body class="min-h-dvh antialiased">
+    <header class="mx-auto flex max-w-2xl items-baseline justify-between px-6 pt-8 text-sm">
+      <a href={home} class="font-mono text-muted hover:text-paper">gapul.net</a>
+      <nav class="flex items-baseline gap-5 text-muted">
+        <a href={home} class:list={['hover:text-paper', path === home && 'text-paper']}>home</a>
+        <a href={works} class:list={['hover:text-paper', path.startsWith(works) && 'text-paper']}>works</a>
+        <a href="/blog" class:list={['hover:text-paper', path.startsWith('/blog') && 'text-paper']}>blog</a>
+        {altHref && (
+          <a href={altHref} class="font-mono text-xs hover:text-paper">
+            {lang === 'ja' ? 'en' : 'ja'}
+          </a>
+        )}
+      </nav>
     </header>
-    <main class="mx-auto max-w-4xl px-6">
+    <main class="mx-auto max-w-2xl px-6">
       <slot />
     </main>
-    <footer class="mx-auto max-w-4xl px-6 py-12 font-mono text-xs text-muted">
-      <p>© {new Date().getFullYear()} {SITE.name} · <a href="/rss.xml" class="hover:text-paper">rss</a> · <a href="https://github.com/gapul/gapul.net" class="hover:text-paper">source</a></p>
+    <footer class="mx-auto max-w-2xl px-6 pb-10 text-xs text-muted">
+      <p>© {new Date().getFullYear()} gapul · <a href="/rss.xml" class="hover:text-paper">rss</a></p>
     </footer>
-
-    <!-- vim風ステータスバー -->
-    <div class="statusbar font-mono" aria-hidden="true">
-      <span class="mode">NORMAL</span>
-      <span class="statuspath">~{path === '/' ? '' : path.replace(/\/$/, '')}</span>
-      <span class="hints">j/k:scroll g/G:top/bottom h:home b:blog</span>
-    </div>
-
-    <script>
-      // vim風キーバインド(入力中は無効)
-      document.addEventListener('keydown', (e) => {
-        if (e.metaKey || e.ctrlKey || e.altKey) return;
-        const t = e.target as HTMLElement;
-        if (t.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(t.tagName)) return;
-        const acts: Record<string, () => void> = {
-          j: () => scrollBy({ top: 90, behavior: 'smooth' }),
-          k: () => scrollBy({ top: -90, behavior: 'smooth' }),
-          g: () => scrollTo({ top: 0, behavior: 'smooth' }),
-          G: () => scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }),
-          h: () => location.assign('/'),
-          b: () => location.assign('/blog'),
-        };
-        acts[e.key]?.();
-      });
-    </script>
   </body>
 </html>
-
-<style>
-  .statusbar {
-    position: fixed;
-    inset: auto 0 0 0;
-    display: flex;
-    align-items: stretch;
-    gap: 1rem;
-    font-size: 0.72rem;
-    line-height: 2.2;
-    background: var(--color-ink-2);
-    border-top: 1px solid var(--color-line);
-    color: var(--color-muted);
-    padding-right: 1rem;
-  }
-
-  .mode {
-    background: var(--color-green);
-    color: var(--color-ink-2);
-    font-weight: 700;
-    padding: 0 0.9ch;
-  }
-
-  .statuspath {
-    color: var(--color-paper);
-  }
-
-  .hints {
-    margin-left: auto;
-    overflow: hidden;
-    white-space: nowrap;
-  }
-</style>
