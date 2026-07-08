@@ -6,7 +6,7 @@ export const STRINGS = {
     description: 'gapul のポートフォリオ。つくったもの、あそんだ記録。',
     tagline: 'つくって、あそぶ。',
     intro:
-      'インタラクティブな作品とツールをつくっています。プロジェクション、ネイティブアプリ、自宅サーバーまわりなど。',
+      '自分のパソコンの環境構築に人生を費しています。その副産物として、ツールやゲーム、ハードウェアなどを作成しています。',
     blogDescription: 'gapul のブログ',
     contactLead: '仕事の相談、作品の感想、なんでもどうぞ。',
     contactName: 'なまえ',
@@ -20,7 +20,7 @@ export const STRINGS = {
     description: "gapul's portfolio — things made, fun had.",
     tagline: 'Make things, have fun.',
     intro:
-      'I make interactive works and tools: projection art, native apps, and homelab stuff.',
+      'I spend my life perfecting my computer setup. Tools, games, and hardware come out as byproducts.',
     blogDescription: "gapul's blog",
     contactLead: 'Work inquiries, feedback, anything welcome.',
     contactName: 'Name',
