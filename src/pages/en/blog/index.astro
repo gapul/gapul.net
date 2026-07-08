@@ -4,6 +4,7 @@ import Base from '../../../layouts/Base.astro';
 import { formatDateJST } from '../../../lib/date';
 import { STRINGS } from '../../../lib/i18n';
 import { RSS } from '../../../lib/site';
+import PageTitle from '../../../components/PageTitle.astro';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime(),
@@ -11,10 +12,10 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 ---
 
 <Base lang="en" title="Blog" description={STRINGS.en.blogDescription} altHref="/blog/">
-  <div class="flex items-center gap-4 pt-20 pb-10">
-    <h1 class="font-mono text-2xl font-bold">blog</h1>
+  <div class="flex items-baseline gap-5 pt-20 pb-10">
+    <PageTitle title="blog" />
     <a href={RSS.href} aria-label="RSS" class="text-muted transition-colors hover:text-accent">
-      <svg viewBox="0 0 24 24" class="h-4 w-4 fill-current" aria-hidden="true">
+      <svg viewBox="0 0 24 24" class="h-5 w-5 fill-current" aria-hidden="true">
         <path d={RSS.icon} />
       </svg>
     </a>

@@ -1,11 +1,14 @@
 ---
 import Base from '../layouts/Base.astro';
+import PageTitle from '../components/PageTitle.astro';
 import ContactForm from '../components/ContactForm.astro';
 ---
 
 <Base lang="ja" title="Contact" altHref="/en/contact/">
   <div class="max-w-2xl">
-    <h1 class="pt-20 pb-10 font-mono text-2xl font-bold">contact</h1>
+    <div class="pt-20 pb-10">
+      <PageTitle title="contact" />
+    </div>
     <ContactForm locale="ja" />
   </div>
 </Base>
