@@ -54,9 +54,21 @@ const contact = lang === 'en' ? '/en/contact/' : '/contact/';
         <a href="/blog" class:list={['hover:text-paper', path.startsWith('/blog') && 'text-paper']}>blog</a>
         <a href={contact} class:list={['hover:text-paper', path.startsWith(contact) && 'text-paper']}>contact</a>
         {altHref && (
-          <a href={altHref} class="font-mono text-xs hover:text-paper">
-            {lang === 'ja' ? 'en' : 'ja'}
-          </a>
+          <span class="font-mono text-xs">
+            {lang === 'ja' ? (
+              <>
+                <span class="text-paper">JP</span>
+                <span> / </span>
+                <a href={altHref} class="hover:text-paper">EN</a>
+              </>
+            ) : (
+              <>
+                <a href={altHref} class="hover:text-paper">JP</a>
+                <span> / </span>
+                <span class="text-paper">EN</span>
+              </>
+            )}
+          </span>
         )}
       </nav>
     </header>
