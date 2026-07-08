@@ -49,14 +49,19 @@ git add -A && git commit && git push   # push で自動デプロイ
 
 ## コンタクトフォーム
 
-`/contact` のフォームは Cloudflare Pages Functions(`functions/api/contact.js`)が受けて
-自宅の ntfy にプッシュ通知する。CF Pages の環境変数に以下が必要:
+`/contact` のフォームは Cloudflare Turnstile で認証し、Cloudflare Pages Functions
+(`functions/api/contact.js`)が受けて自宅の ntfy にプッシュ通知する。
+CF Pages の環境変数に以下が必要:
 
 - `NTFY_URL` — 例: `https://ntfy.gapul.net/contact`
 - `NTFY_TOKEN` — ntfy のアクセストークン(`tk_...`)
+- `TURNSTILE_SECRET` — Turnstile のシークレットキー(Functions 用)
+- `PUBLIC_TURNSTILE_SITE_KEY` — Turnstile のサイトキー(ビルド時に埋め込み)
 
-honeypot(company フィールド)で bot は成功を装って捨てる。ローカルの `pnpm dev` では
-Functions は動かないので、送信テストはデプロイ後かpreview環境で行う。
+Turnstile のキーは CF dashboard → Turnstile でウィジェット(ドメイン gapul.net)を
+作って発行する。未設定時はテストキー(常にパス)でビルドされる。
+honeypot(company フィールド)でも bot は成功を装って捨てる。ローカルの `pnpm dev` では
+Functions は動かないので、送信テストはデプロイ後か preview 環境で行う。
 
 ## デプロイ
 

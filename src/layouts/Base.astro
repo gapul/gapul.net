@@ -45,7 +45,7 @@ const contact = lang === 'en' ? '/en/contact/' : '/contact/';
     <meta name="twitter:card" content="summary" />
     <meta name="generator" content={Astro.generator} />
   </head>
-  <body class="min-h-dvh antialiased">
+  <body class="flex min-h-dvh flex-col antialiased">
     <header class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 px-6 pt-8 text-sm sm:px-12">
       <a href={home} class="font-mono text-muted hover:text-paper">gapul.net</a>
       <nav class="flex items-baseline gap-4 text-muted sm:gap-5">
@@ -60,7 +60,7 @@ const contact = lang === 'en' ? '/en/contact/' : '/contact/';
         )}
       </nav>
     </header>
-    <main class="px-6 sm:px-12">
+    <main class="flex flex-1 flex-col px-6 sm:px-12">
       <slot />
     </main>
     <footer class="flex items-baseline justify-between px-6 pb-8 text-xs text-muted sm:px-12">

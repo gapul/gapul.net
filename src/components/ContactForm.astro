@@ -8,6 +8,8 @@ interface Props {
 const { locale } = Astro.props;
 const t = STRINGS[locale];
 const back = locale === 'en' ? '/en/contact/' : '/contact/';
+// 未設定時は Turnstile のテスト用キー(常にパス)。本番は CF Pages のビルド環境変数で注入
+const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '1x00000000000000000000AA';
 ---
 
 <p class="max-w-md leading-relaxed text-muted">{t.contactLead}</p>
@@ -52,8 +54,12 @@ const back = locale === 'en' ? '/en/contact/' : '/contact/';
       class="mt-2 w-full resize-y border-b border-line bg-transparent pb-2 outline-none focus:border-accent"></textarea>
   </label>
 
+  <div class="cf-turnstile" data-sitekey={siteKey} data-theme="dark"></div>
+
   <button type="submit" class="font-mono hover:text-accent">{t.contactSend}</button>
 </form>
+
+<script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
 <script>
   // 送信後のリダイレクト(?sent=1 / ?error=1)を見て結果メッセージを出す
