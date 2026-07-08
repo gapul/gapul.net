@@ -51,9 +51,9 @@ const blog = lang === 'en' ? '/en/blog/' : '/blog/';
     <header class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 px-6 pt-8 text-base sm:px-12">
       <a href={home} class="font-mono text-muted hover:text-paper">gapul.net</a>
       <nav class="flex items-baseline gap-4 text-muted sm:gap-5">
-        <a href={home} class:list={['hover:text-paper', path === home && 'text-paper']}>home</a>
-        <a href={works} class:list={['hover:text-paper', path.startsWith(works) && 'text-paper']}>works</a>
-        <a href={blog} class:list={['hover:text-paper', (path.startsWith('/blog') || path.startsWith('/en/blog')) && 'text-paper']}>blog</a>
+        <a href={home} class:list={['uppercase hover:text-paper', path === home && 'text-paper']}>home</a>
+        <a href={works} class:list={['uppercase hover:text-paper', path.startsWith(works) && 'text-paper']}>works</a>
+        <a href={blog} class:list={['uppercase hover:text-paper', (path.startsWith('/blog') || path.startsWith('/en/blog')) && 'text-paper']}>blog</a>
         {altHref && (
           <a href={altHref} class="font-mono text-sm" aria-label={lang === 'ja' ? 'Switch to English' : '日本語に切り替え'}>
             <span class:list={[lang === 'ja' ? 'text-paper' : 'hover:text-paper']}>JP</span>
