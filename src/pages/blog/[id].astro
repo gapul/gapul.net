@@ -12,7 +12,13 @@ const { post } = Astro.props;
 const { Content } = await render(post);
 ---
 
-<Base title={post.data.title} description={post.data.description} lang={post.data.lang}>
+<Base
+  title={post.data.title}
+  description={post.data.description}
+  lang={post.data.lang}
+  altHref={post.data.lang === 'en' ? '/blog/' : '/en/blog/'}
+  altIsTranslation={false}
+>
   <article class="max-w-2xl pt-20 pb-16">
     <header class="mb-10">
       <time datetime={post.data.pubDate.toISOString()} class="font-mono text-sm text-muted">

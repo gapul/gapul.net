@@ -12,9 +12,16 @@ interface Props {
   description?: string;
   lang?: Locale;
   altHref?: string; // 対になる言語版ページ(あればスイッチャーを出す)
+  altIsTranslation?: boolean; // altHrefが同一内容の対訳ページなら hreflang も出す
 }
 
-const { title, lang = 'ja', description = STRINGS[lang].description, altHref } = Astro.props;
+const {
+  title,
+  lang = 'ja',
+  description = STRINGS[lang].description,
+  altHref,
+  altIsTranslation = true,
+} = Astro.props;
 const pageTitle = title ? `${title} | ${SITE.title}` : SITE.title;
 const canonical = new URL(Astro.url.pathname, SITE.url);
 const path = Astro.url.pathname;
@@ -31,7 +38,7 @@ const blog = lang === 'en' ? '/en/blog/' : '/blog/';
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    {altHref && (
+    {altHref && altIsTranslation && (
       <>
         <link rel="alternate" hreflang={lang === 'ja' ? 'en' : 'ja'} href={new URL(altHref, SITE.url)} />
         <link rel="alternate" hreflang={lang} href={canonical} />
