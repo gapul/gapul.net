@@ -26,22 +26,30 @@ const nav = [
   <!-- スマホでは縦書きタグラインが出ないので横書きで表示 -->
   <p class="mb-6 text-sm text-muted sm:hidden">{t.tagline}</p>
 
-  <p class="max-w-sm leading-relaxed">{t.intro}</p>
+  <p class="max-w-md text-lg leading-relaxed">{t.intro}</p>
 
   <nav class="mt-14 space-y-4">
     {nav.map((item) => (
       <p>
         <span class="mr-4 font-mono text-xs text-muted">{item.index}</span>
-        <a href={item.href} class="text-lg hover:text-accent">{item.label} →</a>
+        <a href={item.href} class="text-lg font-bold hover:text-accent">{item.label} →</a>
       </p>
     ))}
   </nav>
 
-  <ul class="mt-auto mb-8 ml-auto flex flex-wrap gap-x-6 gap-y-2 pt-14 text-sm sm:absolute sm:right-0 sm:bottom-8 sm:mb-0 sm:pt-0">
+  <ul class="mt-auto mb-8 ml-auto flex gap-6 pt-14 sm:absolute sm:right-0 sm:bottom-8 sm:mb-0 sm:pt-0">
     {LINKS.map((link) => (
       <li>
-        <a href={link.href} target="_blank" rel="noopener me" class="text-muted underline underline-offset-4 hover:text-accent">
-          {link.label}
+        <a
+          href={link.href}
+          target="_blank"
+          rel="noopener me"
+          aria-label={link.label}
+          class="block text-muted transition-colors hover:text-accent"
+        >
+          <svg viewBox="0 0 24 24" class="h-5 w-5 fill-current" aria-hidden="true">
+            <path d={link.icon} />
+          </svg>
         </a>
       </li>
     ))}
