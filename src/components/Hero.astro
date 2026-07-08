@@ -11,23 +11,29 @@ const t = STRINGS[locale];
 const works = locale === 'en' ? '/en/works/' : '/works/';
 ---
 
-<section class="pt-24 pb-24 sm:pt-32">
-  <h1 class="font-mono text-6xl font-bold tracking-tight sm:text-7xl">gapul</h1>
-  <p class="mt-6 text-muted">{t.tagline}</p>
-  <p class="mt-8 max-w-md leading-relaxed">{t.intro}</p>
+<section class="flex min-h-[calc(100dvh-11rem)] flex-col justify-between pt-14 sm:pt-20">
+  <div>
+    <h1 class="font-mono text-[clamp(4.5rem,16vw,12rem)] leading-none font-bold tracking-tight">
+      gapul
+    </h1>
+    <p class="mt-5 text-muted">{t.tagline}</p>
+  </div>
 
-  <p class="mt-10 flex flex-wrap gap-x-6 text-sm">
-    <a href={works} class="hover:text-accent">works →</a>
-    <a href="/blog" class="hover:text-accent">blog →</a>
-  </p>
+  <nav class="space-y-3 py-16 text-lg">
+    <p><a href={works} class="hover:text-accent">works →</a></p>
+    <p><a href="/blog" class="hover:text-accent">blog →</a></p>
+  </nav>
 
-  <ul class="mt-10 flex flex-wrap gap-x-6 gap-y-2 text-sm">
-    {LINKS.map((link) => (
-      <li>
-        <a href={link.href} target="_blank" rel="noopener me" class="text-muted underline underline-offset-4 hover:text-accent">
-          {link.label}
-        </a>
-      </li>
-    ))}
-  </ul>
+  <div class="flex flex-wrap items-end justify-between gap-x-12 gap-y-8 pb-4">
+    <p class="max-w-md leading-relaxed">{t.intro}</p>
+    <ul class="flex flex-wrap gap-x-6 gap-y-2 text-sm">
+      {LINKS.map((link) => (
+        <li>
+          <a href={link.href} target="_blank" rel="noopener me" class="text-muted underline underline-offset-4 hover:text-accent">
+            {link.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
 </section>

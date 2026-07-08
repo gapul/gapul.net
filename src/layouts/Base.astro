@@ -45,7 +45,7 @@ const works = lang === 'en' ? '/en/works/' : '/works/';
     <meta name="generator" content={Astro.generator} />
   </head>
   <body class="min-h-dvh antialiased">
-    <header class="mx-auto flex max-w-2xl items-baseline justify-between px-6 pt-8 text-sm">
+    <header class="flex items-baseline justify-between px-6 pt-8 text-sm sm:px-12">
       <a href={home} class="font-mono text-muted hover:text-paper">gapul.net</a>
       <nav class="flex items-baseline gap-5 text-muted">
         <a href={home} class:list={['hover:text-paper', path === home && 'text-paper']}>home</a>
@@ -58,11 +58,12 @@ const works = lang === 'en' ? '/en/works/' : '/works/';
         )}
       </nav>
     </header>
-    <main class="mx-auto max-w-2xl px-6">
+    <main class="px-6 sm:px-12">
       <slot />
     </main>
-    <footer class="mx-auto max-w-2xl px-6 pb-10 text-xs text-muted">
-      <p>© {new Date().getFullYear()} gapul · <a href="/rss.xml" class="hover:text-paper">rss</a></p>
+    <footer class="flex items-baseline justify-between px-6 pb-8 text-xs text-muted sm:px-12">
+      <p>© {new Date().getFullYear()} gapul</p>
+      <a href="/rss.xml" class="font-mono hover:text-paper">rss</a>
     </footer>
   </body>
 </html>

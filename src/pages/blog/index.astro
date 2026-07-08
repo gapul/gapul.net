@@ -10,7 +10,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 
 <Base title="Blog" description="gapul のブログ">
   <h1 class="pt-20 pb-10 font-mono text-2xl font-bold">blog</h1>
-  <ul class="space-y-3 pb-24">
+  <ul class="max-w-2xl space-y-3 pb-24">
     {posts.map((post) => (
       <li class="flex flex-wrap items-baseline gap-x-4">
         <time datetime={post.data.pubDate.toISOString()} class="font-mono text-sm text-muted">
