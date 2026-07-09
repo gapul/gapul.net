@@ -41,7 +41,6 @@ ${logo}
   ${label('matrix')}@gapul:gapul.net
   ${label('contact')}https://gapul.net/contact
 
-  ${muted('(ブラウザで開くと普通のサイトです)')}
 `;
 
 export async function onRequest({ request, env }) {
