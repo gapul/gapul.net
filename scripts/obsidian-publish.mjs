@@ -1,17 +1,29 @@
-// Obsidian vault から publish: true のノートをブログ記事として取り込む
+// Obsidian vault から publish: true のノートをサイトに取り込む
 //
 // 使い方:
 //   pnpm publish:obsidian            # 取り込み + 取り下げノートの削除
 //   OBSIDIAN_VAULT=/path/to/vault pnpm publish:obsidian
 //
-// ノート側の frontmatter:
+// ブログ記事の frontmatter:
 //   publish: true        # 必須。これが無いノートは対象外
 //   slug: my-post        # 推奨。URLになる(無ければファイル名から生成)
 //   title: 記事タイトル   # 省略時はファイル名
 //   description: 概要     # 省略可
 //   pubDate: 2026-07-08  # 省略時はファイルの更新日時(JST)
 //
-// 変換:
+// works の frontmatter(type: work を付けると記事でなく作品データになる):
+//   publish: true
+//   type: work
+//   title: 作品名          # 省略時はファイル名
+//   description: 一言説明   # 必須
+//   descriptionEn: 英語説明 # 省略可
+//   tags: [Unity, VRM]     # 省略可
+//   repo: https://github.com/...  # 省略可
+//   url: https://...        # 省略可(デモ等。repoより優先)
+//   order: 1                # 省略可(表示順)
+//   ノート本文はサイトには出ない(メモ欄として自由に使える)
+//
+// 変換(ブログのみ):
 //   ![[image.png]]  → 画像を public/blog-assets/<slug>/ へコピーして md 画像に
 //   [[Note|表示名]]  → 表示名(対象も公開済みならリンクに)
 //   [[Note]]        → Note(同上)
@@ -23,6 +35,7 @@ import path from 'node:path';
 const VAULT = process.env.OBSIDIAN_VAULT ?? path.join(homedir(), 'Documents', 'notes');
 const ROOT = new URL('..', import.meta.url).pathname;
 const BLOG_DIR = path.join(ROOT, 'src', 'content', 'blog');
+const WORKS_DIR = path.join(ROOT, 'src', 'content', 'works');
 const ASSETS_DIR = path.join(ROOT, 'public', 'blog-assets');
 const SKIP_DIRS = new Set(['.obsidian', '.trash', '.git', 'node_modules', '00_templates']);
 
@@ -38,16 +51,17 @@ async function walkVault(dir, files = []) {
   return files;
 }
 
-// 簡易 frontmatter パーサ(key: value の1行形式のみ対応)
+// 簡易 frontmatter パーサ(key: value の1行形式のみ対応)。raw は元のYAML行
 function parseFrontmatter(src) {
   const match = src.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?/);
-  if (!match) return { fm: {}, body: src };
+  if (!match) return { fm: {}, raw: [], body: src };
   const fm = {};
-  for (const line of match[1].split(/\r?\n/)) {
+  const raw = match[1].split(/\r?\n/);
+  for (const line of raw) {
     const kv = line.match(/^(\w[\w-]*):\s*(.*)$/);
     if (kv) fm[kv[1]] = kv[2].replace(/^["']|["']$/g, '').trim();
   }
-  return { fm, body: src.slice(match[0].length) };
+  return { fm, raw, body: src.slice(match[0].length) };
 }
 
 function slugify(name) {
@@ -70,11 +84,12 @@ function yamlQuote(value) {
 const vaultFiles = await walkVault(VAULT);
 const byBasename = new Map(vaultFiles.map((f) => [path.basename(f), f]));
 
-// 対象ノートを収集
+// 対象ノートを収集(type: work は作品データ、それ以外はブログ記事)
 const notes = [];
+const works = [];
 for (const file of vaultFiles.filter((f) => f.endsWith('.md'))) {
   const src = await readFile(file, 'utf8');
-  const { fm, body } = parseFrontmatter(src);
+  const { fm, raw, body } = parseFrontmatter(src);
   if (fm.publish !== 'true') continue;
 
   const base = path.basename(file, '.md');
@@ -83,6 +98,16 @@ for (const file of vaultFiles.filter((f) => f.endsWith('.md'))) {
     console.warn(`skip: ${base} — slug を生成できません。frontmatter に slug: を書いてください`);
     continue;
   }
+
+  if (fm.type === 'work') {
+    if (!fm.description) {
+      console.warn(`skip: ${base} — work には description が必須です`);
+      continue;
+    }
+    works.push({ file, base, slug, fm, raw });
+    continue;
+  }
+
   const mtime = (await stat(file)).mtime;
   notes.push({
     file,
@@ -150,4 +175,26 @@ for (const entry of await readdir(BLOG_DIR)) {
   }
 }
 
-console.log(`done: ${notes.length} 件`);
+// works の書き出し。frontmatter はYAMLなので許可キーの行をそのまま転記する
+const WORK_KEYS = /^(title|description|descriptionEn|tags|repo|url|order):/;
+await mkdir(WORKS_DIR, { recursive: true });
+for (const work of works) {
+  const lines = work.raw.filter((line) => WORK_KEYS.test(line));
+  if (!work.fm.title) lines.unshift(`title: ${yamlQuote(work.base)}`);
+  const yaml = `# generated-from: obsidian\n${lines.join('\n')}\n`;
+  await writeFile(path.join(WORKS_DIR, `${work.slug}.yaml`), yaml);
+  console.log(`work: ${work.slug} ← ${path.relative(VAULT, work.file)}`);
+}
+
+// vault 側で publish を外した work を削除(generated マーカー付きのみ)
+const currentWorks = new Set(works.map((w) => `${w.slug}.yaml`));
+for (const entry of await readdir(WORKS_DIR)) {
+  if (!entry.endsWith('.yaml') || currentWorks.has(entry)) continue;
+  const head = await readFile(path.join(WORKS_DIR, entry), 'utf8');
+  if (head.startsWith('# generated-from: obsidian')) {
+    await rm(path.join(WORKS_DIR, entry));
+    console.log(`unpublish work: ${entry}`);
+  }
+}
+
+console.log(`done: 記事 ${notes.length} 件 / works ${works.length} 件`);

@@ -47,6 +47,28 @@ git add -A && git commit && git push   # push で自動デプロイ
 `publish: true` を外して再実行すると記事は取り下げられる(`source: obsidian` の
 記事だけが対象。手書きの md は触らない)。
 
+### works も Obsidian で管理できる
+
+frontmatter に `type: work` を付けたノートは記事ではなく作品データになる:
+
+```yaml
+---
+publish: true
+type: work
+title: DesktopCat        # 省略時はファイル名
+description: 一言説明     # 必須
+descriptionEn: 英語説明   # 省略可(EN版worksで使用)
+tags: [macOS, Swift]     # 省略可
+repo: https://github.com/gapul/desktop-cat  # 省略可
+url: https://...          # 省略可(デモ等。repoより優先)
+order: 1                  # 省略可(表示順、小さいほど上)
+---
+本文はサイトに出ないので開発メモなど自由に。
+```
+
+同じく `pnpm publish:obsidian` → push で反映。`publish: true` を外せば取り下げ。
+生成物は `src/content/works/*.yaml`(先頭に generated マーカー付き。手書き yaml は触らない)。
+
 ## コンタクトフォーム
 
 `/contact` のフォーム(全項目必須: なまえ / メール / 件名 / メッセージ)は
