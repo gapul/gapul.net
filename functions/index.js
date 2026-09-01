@@ -29,7 +29,7 @@ const muted = (s) => c(245, s);
 const CARD = `
 ${logo}
 
-  ${bold('gapul')} ${muted('—')} つくって、あそぶ。
+  ${bold('gapul')} ${muted('—')} 自己目的化進行中。
   ${muted('自分のパソコンの環境構築に人生を費しています。')}
 
   ${label('web')}https://gapul.net

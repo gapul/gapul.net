@@ -4,7 +4,7 @@ export type Locale = 'ja' | 'en';
 export const STRINGS = {
   ja: {
     description: 'gapul のポートフォリオ。つくったもの、あそんだ記録。',
-    tagline: 'つくって、あそぶ。',
+    tagline: '自己目的化進行中。',
     intro:
       '自分のパソコンの環境構築に人生を費しています。その副産物として、ツールやゲーム、ハードウェアなどを作成しています。',
     blogDescription: 'gapul のブログ',
@@ -19,7 +19,7 @@ export const STRINGS = {
   },
   en: {
     description: "gapul's portfolio — things made, fun had.",
-    tagline: 'Make things, have fun.',
+    tagline: 'Becoming an end in itself.',
     intro:
       'I spend my life perfecting my computer setup. Tools, games, and hardware come out as byproducts.',
     blogDescription: "gapul's blog",
