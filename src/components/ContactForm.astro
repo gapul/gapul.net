@@ -14,10 +14,10 @@ const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '1x0000000000000000
 
 <p class="max-w-md leading-relaxed text-muted">{t.contactLead}</p>
 
-<p id="form-sent" hidden class="mt-8 max-w-md text-accent">{t.contactSent}</p>
-<p id="form-error" hidden class="mt-8 max-w-md text-red-400">{t.contactError}</p>
+<p id="form-sent" role="status" tabindex="-1" hidden class="mt-8 max-w-md text-accent outline-none">{t.contactSent}</p>
+<p id="form-error" role="alert" tabindex="-1" hidden class="mt-8 max-w-md text-red-400 outline-none">{t.contactError}</p>
 
-<form method="post" action="/api/contact" class="mt-10 max-w-md space-y-8 pb-24">
+<form id="contact-form" method="post" action="/api/contact" class="mt-10 max-w-md space-y-8 pb-24">
   <input type="hidden" name="back" value={back} />
   <!-- honeypot(botよけ)。人間には見えない -->
   <p class="hidden" aria-hidden="true">
@@ -69,9 +69,18 @@ const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '1x0000000000000000
       class="mt-2 w-full resize-y border-b border-line bg-transparent pb-2 outline-none focus:border-accent"></textarea>
   </label>
 
-  <div class="cf-turnstile" data-sitekey={siteKey} data-theme="dark"></div>
+  <div
+    class="cf-turnstile"
+    data-sitekey={siteKey}
+    data-theme="dark"
+    data-size="flexible"
+    data-appearance="interaction-only"></div>
 
-  <button type="submit" class="font-mono hover:text-accent">{t.contactSend}</button>
+  <button
+    id="contact-submit"
+    type="submit"
+    data-sending-label={t.contactSending}
+    class="font-mono hover:text-accent disabled:cursor-wait disabled:opacity-50">{t.contactSend}</button>
 </form>
 
 <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
@@ -79,6 +88,31 @@ const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '1x0000000000000000
 <script>
   // 送信後のリダイレクト(?sent=1 / ?error=1)を見て結果メッセージを出す
   const params = new URLSearchParams(location.search);
-  if (params.has('sent')) document.getElementById('form-sent')!.hidden = false;
-  if (params.has('error')) document.getElementById('form-error')!.hidden = false;
+  const result = params.has('sent')
+    ? document.getElementById('form-sent')
+    : params.has('error')
+      ? document.getElementById('form-error')
+      : null;
+  if (result) {
+    result.hidden = false;
+    result.focus({ preventScroll: true });
+  }
+
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const submit = document.getElementById('contact-submit') as HTMLButtonElement | null;
+  const defaultLabel = submit?.textContent ?? '';
+  form?.addEventListener('submit', () => {
+    form.setAttribute('aria-busy', 'true');
+    if (submit) {
+      submit.disabled = true;
+      submit.textContent = submit.dataset.sendingLabel ?? defaultLabel;
+    }
+  });
+  window.addEventListener('pageshow', () => {
+    form?.removeAttribute('aria-busy');
+    if (submit) {
+      submit.disabled = false;
+      submit.textContent = defaultLabel;
+    }
+  });
 </script>

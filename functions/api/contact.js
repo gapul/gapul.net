@@ -13,10 +13,28 @@
 // メールと ntfy はどちらか片方でも配送できれば成功扱い。
 
 export async function onRequestPost({ request, env }) {
-  const form = await request.formData();
-  const back = String(form.get('back') || '/contact/');
+  let back = '/contact/';
+  try {
+    const referer = new URL(request.headers.get('Referer') || request.url);
+    if (referer.pathname.startsWith('/en/')) back = '/en/contact/';
+  } catch {}
   const redirect = (ok) =>
     Response.redirect(new URL(`${back}?${ok ? 'sent' : 'error'}=1`, request.url).toString(), 303);
+
+  const origin = request.headers.get('Origin');
+  if (origin) {
+    try {
+      if (new URL(origin).host !== new URL(request.url).host) return redirect(false);
+    } catch {
+      return redirect(false);
+    }
+  }
+
+  const contentLength = Number(request.headers.get('Content-Length') || 0);
+  if (contentLength > 16_000) return redirect(false);
+
+  const form = await request.formData();
+  back = form.get('back') === '/en/contact/' ? '/en/contact/' : '/contact/';
 
   // Tor 出口ノード(Cloudflare は国コード T1 として渡してくる)は拒否
   if (request.cf?.country === 'T1') return redirect(false);
@@ -29,29 +47,37 @@ export async function onRequestPost({ request, env }) {
   const email = String(form.get('email') || '').trim().slice(0, 200);
   const subject = String(form.get('subject') || '').trim().slice(0, 200);
   const message = String(form.get('message') || '').trim();
-  if (!name || !email || !subject || !message || message.length > 5000) return redirect(false);
+  if (
+    !name || !email || !subject || !message || message.length > 5000 ||
+    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+  ) return redirect(false);
 
   // Turnstile 検証
   if (!env.TURNSTILE_SECRET) return redirect(false);
   const token = String(form.get('cf-turnstile-response') || '');
   if (!token) return redirect(false);
-  const verifyRes = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
-    method: 'POST',
-    body: new URLSearchParams({
-      secret: env.TURNSTILE_SECRET,
-      response: token,
-      remoteip: request.headers.get('CF-Connecting-IP') || '',
-    }),
-  });
-  const outcome = await verifyRes.json();
-  if (!outcome.success) return redirect(false);
+  try {
+    const verifyRes = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      body: new URLSearchParams({
+        secret: env.TURNSTILE_SECRET,
+        response: token,
+        remoteip: request.headers.get('CF-Connecting-IP') || '',
+      }),
+      signal: AbortSignal.timeout(8000),
+    });
+    const outcome = await verifyRes.json();
+    if (!outcome.success) return redirect(false);
+  } catch {
+    return redirect(false);
+  }
 
   const text = `from: ${name} <${email}>\n\n${message}`;
-  let delivered = false;
+  const deliveries = [];
 
   // メール送信(Cloudflare Email Service)
   if (env.CF_ACCOUNT_ID && env.EMAIL_API_TOKEN && env.EMAIL_FROM && env.EMAIL_TO) {
-    const res = await fetch(
+    deliveries.push(fetch(
       `https://api.cloudflare.com/client/v4/accounts/${env.CF_ACCOUNT_ID}/email/sending/send`,
       {
         method: 'POST',
@@ -62,17 +88,17 @@ export async function onRequestPost({ request, env }) {
         body: JSON.stringify({
           to: env.EMAIL_TO,
           from: env.EMAIL_FROM,
-          subject: `[gapul.net] ${subject}`,
+          subject: `[gapul.net] ${subject.replace(/[\r\n]+/g, ' ')}`,
           text,
         }),
+        signal: AbortSignal.timeout(10_000),
       },
-    );
-    delivered = res.ok;
+    ).then((res) => res.ok).catch(() => false));
   }
 
   // ntfy プッシュ通知(件名に日本語が入るためヘッダでなく本文に載せる)
   if (env.NTFY_URL && env.NTFY_TOKEN) {
-    const res = await fetch(env.NTFY_URL, {
+    deliveries.push(fetch(env.NTFY_URL, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${env.NTFY_TOKEN}`,
@@ -80,9 +106,10 @@ export async function onRequestPost({ request, env }) {
         Tags: 'email',
       },
       body: `subject: ${subject}\n${text}`,
-    });
-    delivered = delivered || res.ok;
+      signal: AbortSignal.timeout(10_000),
+    }).then((res) => res.ok).catch(() => false));
   }
 
+  const delivered = (await Promise.all(deliveries)).some(Boolean);
   return redirect(delivered);
 }
