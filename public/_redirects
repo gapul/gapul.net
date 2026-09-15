@@ -1,0 +1,5 @@
+# Fediverse: the account is @gapul@gapul.net but GoToSocial itself runs at social.gapul.net
+# (homeserver, dotfiles nix/homelab/social.nix). Remote servers look these up on the apex first.
+/.well-known/webfinger  https://social.gapul.net/.well-known/webfinger  301
+/.well-known/host-meta  https://social.gapul.net/.well-known/host-meta  301
+/.well-known/nodeinfo   https://social.gapul.net/.well-known/nodeinfo   301

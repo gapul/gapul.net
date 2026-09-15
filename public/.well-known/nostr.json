@@ -1,0 +1,9 @@
+{
+  "names": {
+    "gapul": "d2e9e62e05017575fb077ccb7abff540d8904686f5c1e6e4b669820e3d4990d5",
+    "_": "d2e9e62e05017575fb077ccb7abff540d8904686f5c1e6e4b669820e3d4990d5"
+  },
+  "relays": {
+    "d2e9e62e05017575fb077ccb7abff540d8904686f5c1e6e4b669820e3d4990d5": ["wss://relay.gapul.net"]
+  }
+}
