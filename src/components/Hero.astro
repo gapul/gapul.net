@@ -46,7 +46,7 @@ const nav = [
           aria-label={link.label}
           class="block text-muted transition-colors hover:text-accent"
         >
-          <svg viewBox="0 0 24 24" class="h-5 w-5 fill-current" aria-hidden="true">
+          <svg viewBox={link.viewBox} class="h-5 w-5 fill-current" aria-hidden="true">
             <path d={link.icon} />
           </svg>
         </a>
