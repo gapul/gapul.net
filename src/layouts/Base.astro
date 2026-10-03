@@ -48,6 +48,8 @@ const blog = lang === 'en' ? '/en/blog/' : '/blog/';
     <link rel="icon" type="image/png" sizes="512x512" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="alternate" type="application/rss+xml" title={SITE.title} href="/rss.xml" />
+    <!-- Mastodon/ActivityPub profile verification reads rel="me" here, same as a visible link would -->
+    <link rel="me" href="https://social.gapul.net/@gapul" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />

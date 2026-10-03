@@ -1,5 +1,5 @@
 ---
-import { LINKS, RSS } from '../lib/site';
+import { LINKS } from '../lib/site';
 import { STRINGS, type Locale } from '../lib/i18n';
 
 interface Props {
@@ -45,7 +45,7 @@ const nav = [
   </a>
 
   <ul class="mt-auto mb-8 ml-auto flex gap-6 pt-14 sm:absolute sm:right-0 sm:bottom-8 sm:mb-0 sm:pt-0">
-    {[...LINKS, RSS].map((link) => (
+    {LINKS.map((link) => (
       <li>
         <a
           href={link.href}
