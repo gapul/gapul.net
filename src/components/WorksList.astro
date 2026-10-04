@@ -16,9 +16,13 @@ const works = (await getCollection('works')).sort(
   <ul class="space-y-6 pb-24">
     {works.map(({ data }) => (
       <li>
-        <a href={data.url ?? data.repo} target="_blank" rel="noopener" class="hover:text-accent">
-          {data.title}
-        </a>
+        {data.url ?? data.repo ? (
+          <a href={data.url ?? data.repo} target="_blank" rel="noopener" class="hover:text-accent">
+            {data.title}
+          </a>
+        ) : (
+          <span>{data.title}</span>
+        )}
         <p class="mt-1 text-sm leading-relaxed text-muted">
           {locale === 'en' ? (data.descriptionEn ?? data.description) : data.description}
         </p>
