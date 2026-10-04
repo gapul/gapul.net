@@ -15,13 +15,17 @@ const blog = defineCollection({
 
 const works = defineCollection({
   loader: glob({ pattern: '**/*.yaml', base: './src/content/works' }),
-  schema: z.object({
+  schema: ({ image }) => z.object({
     title: z.string(),
     description: z.string(),
     descriptionEn: z.string().optional(),
     tags: z.array(z.string()).default([]),
     repo: z.string().url().optional(),
     url: z.string().url().optional(),
+    // Path relative to the yaml file, e.g. ../../assets/works/foo.webp.
+    // Served as-is (no sharp), so pre-resize to ~1200px wide.
+    image: image().optional(),
+    imageAlt: z.string().optional(),
     order: z.number().default(99),
   }),
 });

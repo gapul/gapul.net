@@ -16,6 +16,17 @@ const works = (await getCollection('works')).sort(
   <ul class="space-y-6 pb-24">
     {works.map(({ data }) => (
       <li>
+        {data.image && (
+          <img
+            src={data.image.src}
+            width={data.image.width}
+            height={data.image.height}
+            alt={data.imageAlt ?? data.title}
+            loading="lazy"
+            decoding="async"
+            class="mb-3 w-full rounded border border-muted/30"
+          />
+        )}
         {data.url ?? data.repo ? (
           <a href={data.url ?? data.repo} target="_blank" rel="noopener" class="hover:text-accent">
             {data.title}
