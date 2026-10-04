@@ -2,4 +2,6 @@ title: Ring Flight Adventure
 description: "UT-virtualの2024年駒場祭展示向けに制作した、ほうきで島々を飛びリングをくぐるMeta Quest用VRゲーム。担当: 効果音の選定と組み込み、乗り物の3D導入、サイン波で上下し障害物を避ける円周移動スクリプトの実装。"
 descriptionEn: "A Meta Quest VR game exhibited by UT-virtual at the Komaba Festival 2024, where players fly on a broom between islands to pass through rings. Responsible for sound effect selection and integration, vehicle 3D object setup, and scripting circular movement with sine-wave vertical oscillation to avoid obstacles."
 tags: [Unity, C#, VR, Meta Quest]
+image: ../../assets/works/ring-flight-adventure.webp
+imageAlt: "Ring Flight Adventure のプレイ画面"
 order: 1

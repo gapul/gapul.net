@@ -2,4 +2,6 @@ title: Buckshot Roulette VR
 description: "東大VRサークルUT-virtualの2024年の新入生開発企画でチーム制作した、市販ゲームのUnity製VR再現作品。担当: 手番・HP・弾管理やアイテム等のゲーム進行ロジックのC#実装・パラメータ化、BGM・効果音の組み込み。"
 descriptionEn: "A VR recreation of the commercial game Buckshot Roulette developed in Unity by a team for the 2024 UT-virtual freshman project. Responsible for C# implementation and parameterization of game progression logic (turns, HP, ammo, and items) and audio integration."
 tags: [Unity, C#, VR]
+image: ../../assets/works/buckshot-roulette-vr.webp
+imageAlt: "Buckshot Roulette VR のゲームワールド"
 order: 2
