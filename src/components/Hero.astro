@@ -31,7 +31,7 @@ const nav = [
     {nav.map((item) => (
       <p>
         <span class="mr-4 font-mono text-xs text-muted">{item.index}</span>
-        <a href={item.href} class="text-lg font-bold hover:text-accent">{item.label} →</a>
+        <a href={item.href} class="display text-lg hover:text-accent">{item.label} →</a>
       </p>
     ))}
   </nav>
@@ -62,7 +62,7 @@ const nav = [
     ))}
   </ul>
 
-  <h1 class="order-first mb-8 pt-2 font-mono text-[clamp(3rem,min(17vw,25vh),15rem)] leading-[1.1] font-bold tracking-tight whitespace-nowrap sm:order-none sm:mt-auto sm:mb-14 sm:pt-10">
+  <h1 class="display display-hero order-first mb-8 pt-2 leading-[0.95] whitespace-nowrap sm:order-none sm:mt-auto sm:mb-14 sm:pt-10">
     gapul<span class="text-accent">.</span>
   </h1>
 </section>
