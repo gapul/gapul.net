@@ -13,8 +13,8 @@
 
 /*
  * 横幅連動のバリアブルフォント。
- * 100vw を無次元数にして 320..1600px を t=0..1 に正規化し、各軸を t から連続的に導く。
- * 狭い: 細幅・極太・GRAD+ で詰める / 広い: 幅広・細字・少し傾けて余白で見せる。
+ * 100vw を無次元数にして 320..1600px を t=0..1 に正規化し、Roboto Flex の wdth 軸を t から連続的に導く。
+ * 狭い画面ほど字幅を詰め、広い画面ほど字幅を広げる。太さ(wght/GRAD)は固定。
  * tan(atan2()) は Safari 15.4+ / Chrome 111+ / Firefox 118+。非対応では軸は既定値のまま(文字は出る)。
  */
 :root {
@@ -22,11 +22,7 @@
   --t: clamp(0, calc((var(--vw) - 320) / (1600 - 320)), 1);
 
   --wdth: calc(60 + var(--t) * 91); /* 60 → 151 */
-  --wght: calc(900 - var(--t) * 600); /* 900 → 300 */
-  --grad: calc(100 - var(--t) * 250); /* 100 → -150 */
-  --slnt: calc(0 - var(--t) * 8); /* 0 → -8 */
-  --wght-jp: calc(600 - var(--t) * 250); /* 600 → 350 (ダーク背景なので細すぎない範囲) */
-  --track: calc(-0.03em + var(--t) * 0.08em); /* -0.03em → 0.05em */
+  --track: calc(-0.02em + var(--t) * 0.06em); /* -0.02em → 0.04em */
 }
 
 html {
@@ -36,19 +32,17 @@ html {
 
 body {
   font-family: var(--font-sans);
-  /* font-variation-settings ではなく font-weight で駆動する(Tailwind の font-bold が上書きできるように) */
-  font-weight: var(--wght-jp);
+  /* Noto Sans JP の 400 はダーク背景だと細いので本文は 500 */
+  font-weight: 500;
 }
 
 /* Latin の見出し・ナビ用。和文は font-family のフォールバックで Noto Sans JP に落ちる */
 .display {
   font-family: var(--font-display);
   font-optical-sizing: none;
+  font-weight: 600;
   font-variation-settings:
     'wdth' var(--wdth),
-    'wght' var(--wght),
-    'GRAD' var(--grad),
-    'slnt' var(--slnt),
     'opsz' 16;
   letter-spacing: var(--track);
 }
@@ -56,11 +50,9 @@ body {
 /* トップの名前。wdth が広がるぶん 1 文字が太るので、文字サイズの係数を t で弱めて幅に収める */
 .display-hero {
   font-size: min(calc(100vw / (6 * (0.55 + var(--t) * 0.62))), 25vh);
+  font-weight: 700;
   font-variation-settings:
     'wdth' var(--wdth),
-    'wght' var(--wght),
-    'GRAD' var(--grad),
-    'slnt' var(--slnt),
     'opsz' 144;
   letter-spacing: calc(var(--track) - 0.02em);
 }
