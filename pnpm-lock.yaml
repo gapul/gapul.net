@@ -17,9 +17,12 @@ importers:
       '@fontsource-variable/jetbrains-mono':
         specifier: ^5.2.8
         version: 5.2.8
-      '@fontsource/zen-kaku-gothic-new':
-        specifier: ^5.2.7
-        version: 5.2.7
+      '@fontsource-variable/noto-sans-jp':
+        specifier: ^5.3.0
+        version: 5.3.0
+      '@fontsource-variable/roboto-flex':
+        specifier: ^5.3.0
+        version: 5.3.0
       '@tailwindcss/typography':
         specifier: ^0.5.20
         version: 0.5.20(tailwindcss@4.3.1)
@@ -365,8 +368,11 @@ packages:
   '@fontsource-variable/jetbrains-mono@5.2.8':
     resolution: {integrity: sha512-WBA9elru6Jdp5df2mES55wuOO0WIrn3kpXnI4+W2ek5u3ZgLS9XS4gmIlcQhiZOWEKl95meYdvK7xI+ETLCq/Q==}
 
-  '@fontsource/zen-kaku-gothic-new@5.2.7':
-    resolution: {integrity: sha512-tfGiyBqeeBjUURHm+RIuBJCxIKhZFp46/+LEc+zCxR4sLslKwlVpWda0ZOnX/mTvOHpfr4DYjiV/pVosRXHWaw==}
+  '@fontsource-variable/noto-sans-jp@5.3.0':
+    resolution: {integrity: sha512-XVL9GfGBRjj523v9w3Bctu4mNq7E5rUa+AMZm8DK1EM3LAGlKC3DZMvuqkLn4DB4TwwoAjcsJUCiRpUTDzzOkw==}
+
+  '@fontsource-variable/roboto-flex@5.3.0':
+    resolution: {integrity: sha512-bOxckUy0qXNRjhV6e4pcHGSvptix4ZRD1uaj5Za8h+p3qrb2GL4U4TQdpVmPSy0SmqwldfD+JJqEKdF68EyiAw==}
 
   '@img/colour@1.1.0':
     resolution: {integrity: sha512-Td76q7j57o/tLVdgS746cYARfSyxk8iEfRxewL9h4OMzYhbW4TAcppl0mT4eyqXddh6L/jwoM75mo7ixa/pCeQ==}
@@ -1885,7 +1891,9 @@ snapshots:
 
   '@fontsource-variable/jetbrains-mono@5.2.8': {}
 
-  '@fontsource/zen-kaku-gothic-new@5.2.7': {}
+  '@fontsource-variable/noto-sans-jp@5.3.0': {}
+
+  '@fontsource-variable/roboto-flex@5.3.0': {}
 
   '@img/colour@1.1.0':
     optional: true
