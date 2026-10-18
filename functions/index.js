@@ -1,58 +1,25 @@
 // curl / wget などターミナルから来た人には ANSI アートの名刺を返す。
 // ブラウザには通常の静的ページ(env.ASSETS)をそのまま渡す。
+//
+// 名刺の中身はビルド時に src/pages/card.txt.ts がサイトと同じデータから生成する
+// (/card.txt)。ここでは User-Agent を見て振り分けるだけ。
 
-const ESC = '\u001b[';
-const R = `${ESC}0m`; // reset
-const c = (code, s) => `${ESC}38;5;${code}m${s}${R}`;
-const bold = (s) => `${ESC}1m${s}${R}`;
-
-// ロゴの行ごとにブルー→パープルのグラデーション(サイトのアクセントに合わせる)
-const LOGO_COLORS = [111, 111, 105, 99, 135, 140];
-const LOGO = [
-  ' ██████╗  █████╗ ██████╗ ██╗   ██╗██╗       ',
-  '██╔════╝ ██╔══██╗██╔══██╗██║   ██║██║       ',
-  '██║  ███╗███████║██████╔╝██║   ██║██║       ',
-  '██║   ██║██╔══██║██╔═══╝ ██║   ██║██║       ',
-  '╚██████╔╝██║  ██║██║     ╚██████╔╝███████╗  ',
-  ' ╚═════╝ ╚═╝  ╚═╝╚═╝      ╚═════╝ ╚══════╝  ',
-];
-// 末尾のピリオド(アクセントカラー固定)
-const DOT = ['   ', '   ', '   ', '   ', '██╗', '╚═╝'];
-
-const logo = LOGO.map(
-  (line, i) => c(LOGO_COLORS[i], line) + c(111, DOT[i]),
-).join('\n');
-
-const label = (s) => c(80, s.padEnd(9)); // teal
-const muted = (s) => c(245, s);
-
-const CARD = `
-${logo}
-
-  ${bold('gapul')} ${muted('—')} 自己目的化進行中。
-  ${muted('自分のパソコンの環境構築に人生を費しています。')}
-
-  ${label('web')}https://gapul.net
-  ${label('works')}https://gapul.net/works
-  ${label('blog')}https://gapul.net/blog
-  ${label('rss')}https://gapul.net/rss.xml
-  ${label('github')}https://github.com/gapul
-  ${label('x')}https://x.com/gapul1729
-  ${label('matrix')}@gapul:gapul.net
-  ${label('contact')}https://gapul.net/contact
-
-`;
+const TERMINAL_UA = /\b(curl|wget|httpie|aria2|fetch)\b/i;
 
 export async function onRequest({ request, env }) {
   const ua = request.headers.get('user-agent') || '';
-  if (/\b(curl|wget|httpie|aria2|fetch)\b/i.test(ua)) {
-    return new Response(CARD, {
-      headers: {
-        'content-type': 'text/plain; charset=utf-8',
-        'cache-control': 'public, max-age=3600',
-        vary: 'user-agent',
-      },
-    });
+  if (!TERMINAL_UA.test(ua)) {
+    return env.ASSETS.fetch(request);
   }
-  return env.ASSETS.fetch(request);
+  const card = await env.ASSETS.fetch(new URL('/card.txt', request.url));
+  if (!card.ok) {
+    return env.ASSETS.fetch(request);
+  }
+  return new Response(card.body, {
+    headers: {
+      'content-type': 'text/plain; charset=utf-8',
+      'cache-control': 'public, max-age=3600',
+      vary: 'user-agent',
+    },
+  });
 }
