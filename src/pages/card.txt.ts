@@ -12,7 +12,6 @@ const R = `${ESC}0m`;
 const c = (code: number, s: string) => `${ESC}38;5;${code}m${s}${R}`;
 const bold = (s: string) => `${ESC}1m${s}${R}`;
 const muted = (s: string) => c(245, s);
-const label = (s: string) => c(80, s.padEnd(9)); // teal
 const heading = (s: string) => `  ${muted('──')} ${c(111, s)}`;
 
 // ロゴの行ごとにブルー→パープルのグラデーション(サイトのアクセントに合わせる)
@@ -28,9 +27,6 @@ const LOGO = [
 // 末尾のピリオド(アクセントカラー固定)
 const DOT = ['   ', '   ', '   ', '   ', '██╗', '╚═╝'];
 
-// matrix.to のリンクは ID だけ見せたほうが端末では読みやすい
-const display = (href: string) => href.replace('https://matrix.to/#/', '');
-
 export const GET: APIRoute = async () => {
   const t = STRINGS.ja;
   const works = (await getCollection('works')).sort((a, b) => a.data.order - b.data.order);
@@ -45,15 +41,24 @@ export const GET: APIRoute = async () => {
     `  ${bold(SITE.name)} ${muted('—')} ${t.tagline}`,
     // 端末の幅に収まるよう、紹介文は文ごとに改行する
     ...t.intro.split(/(?<=。)/).map((s) => `  ${muted(s)}`),
-    '',
-    `  ${label('web')}${SITE.url}`,
-    `  ${label('works')}${SITE.url}/works`,
-    `  ${label('blog')}${SITE.url}/blog`,
-    `  ${label('rss')}${SITE.url}${RSS.href}`,
-    `  ${label('contact')}${SITE.url}/contact`,
-    ...LINKS.map((link) => `  ${label(link.label.toLowerCase())}${display(link.href)}`),
-    `  ${label('pgp')}${fingerprintGroups()}`,
   ];
+
+  // ラベル列は一番長いラベルに合わせて揃える
+  const rows: [string, string][] = [
+    ['web', SITE.url],
+    ['works', `${SITE.url}/works`],
+    ['blog', `${SITE.url}/blog`],
+    ['rss', `${SITE.url}${RSS.href}`],
+    ['contact', `${SITE.url}/contact`],
+    // handle(Matrix ID や Fediverse のアカウント)のほうが端末では読みやすい
+    ...LINKS.map((link): [string, string] => [
+      link.label.toLowerCase(),
+      'handle' in link ? link.handle : link.href,
+    ]),
+    ['pgp', fingerprintGroups()],
+  ];
+  const width = Math.max(...rows.map(([k]) => k.length)) + 2;
+  lines.push('', ...rows.map(([k, v]) => `  ${c(80, k.padEnd(width))}${v}`));
 
   if (works.length > 0) {
     lines.push('', heading('works'));
