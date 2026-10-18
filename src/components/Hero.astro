@@ -1,5 +1,5 @@
 ---
-import { LINKS } from '../lib/site';
+import { FINGERPRINT, LINKS, fingerprintGroups } from '../lib/site';
 import { STRINGS, type Locale } from '../lib/i18n';
 
 interface Props {
@@ -37,11 +37,11 @@ const nav = [
   </nav>
 
   <a
-    href="https://keyoxide.org/F2DE0D61E8D134A1DB4317C7306E740A6FA1BCF5"
+    href={`https://keyoxide.org/${FINGERPRINT}`}
     rel="noopener"
     class="mt-6 block font-mono text-xs break-all text-muted hover:text-accent"
   >
-    F2DE 0D61 E8D1 34A1 DB43 17C7 306E 740A 6FA1 BCF5
+    {fingerprintGroups()}
   </a>
 
   <ul class="mt-auto mb-8 ml-auto flex gap-6 pt-14 sm:absolute sm:right-0 sm:bottom-8 sm:mb-0 sm:pt-0">

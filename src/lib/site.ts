@@ -6,6 +6,11 @@ export const SITE = {
   url: 'https://gapul.net',
 } as const;
 
+// OpenPGP 鍵のフィンガープリント(トップページと curl 名刺で共有)
+export const FINGERPRINT = 'F2DE0D61E8D134A1DB4317C7306E740A6FA1BCF5';
+export const fingerprintGroups = (fp: string = FINGERPRINT): string =>
+  fp.match(/.{4}/g)!.join(' ');
+
 // icon は Simple Icons の 24x24 パスデータ(viewBox が異なるものだけ個別指定)
 export const LINKS = [
   {
