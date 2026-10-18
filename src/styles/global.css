@@ -6,8 +6,23 @@
   --color-paper: #dcdcdf;
   --color-muted: #7c7c84;
   --color-accent: #8fa8ff;
-  --font-sans: 'Zen Kaku Gothic New', 'Hiragino Sans', system-ui, sans-serif;
+  --font-sans: 'Noto Sans JP Variable', 'Hiragino Sans', system-ui, sans-serif;
+  --font-display: 'Roboto Flex Variable', 'Noto Sans JP Variable', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono Variable', 'SF Mono', ui-monospace, monospace;
+}
+
+/*
+ * 横幅連動のバリアブルフォント。
+ * 100vw を無次元数にして 320..1600px を t=0..1 に正規化し、Roboto Flex の wdth 軸を t から連続的に導く。
+ * 狭い画面ほど字幅を詰め、広い画面ほど字幅を広げる。太さ(wght/GRAD)は固定。
+ * tan(atan2()) は Safari 15.4+ / Chrome 111+ / Firefox 118+。非対応では軸は既定値のまま(文字は出る)。
+ */
+:root {
+  --vw: tan(atan2(100vw, 1px));
+  --t: clamp(0, calc((var(--vw) - 320) / (1600 - 320)), 1);
+
+  --wdth: calc(60 + var(--t) * 91); /* 60 → 151 */
+  --track: calc(-0.02em + var(--t) * 0.06em); /* -0.02em → 0.04em */
 }
 
 html {
@@ -17,8 +32,29 @@ html {
 
 body {
   font-family: var(--font-sans);
-  /* Zen Kaku Gothic New の400はダーク背景だと細いので本文は500 */
+  /* Noto Sans JP の 400 はダーク背景だと細いので本文は 500 */
   font-weight: 500;
+}
+
+/* Latin の見出し・ナビ用。和文は font-family のフォールバックで Noto Sans JP に落ちる */
+.display {
+  font-family: var(--font-display);
+  font-optical-sizing: none;
+  font-weight: 600;
+  font-variation-settings:
+    'wdth' var(--wdth),
+    'opsz' 16;
+  letter-spacing: var(--track);
+}
+
+/* トップの名前。wdth が広がるぶん 1 文字が太るので、文字サイズの係数を t で弱めて幅に収める */
+.display-hero {
+  font-size: min(calc(100vw / (6 * (0.55 + var(--t) * 0.62))), 25vh);
+  font-weight: 700;
+  font-variation-settings:
+    'wdth' var(--wdth),
+    'opsz' 144;
+  letter-spacing: calc(var(--track) - 0.02em);
 }
 
 ::selection {

@@ -1,7 +1,7 @@
 ---
-import '@fontsource/zen-kaku-gothic-new/400.css';
-import '@fontsource/zen-kaku-gothic-new/500.css';
-import '@fontsource/zen-kaku-gothic-new/700.css';
+// full.css = wght/wdth/slnt/opsz/GRAD を全部持つ版(latin サブセットのみ実際に読まれる)
+import '@fontsource-variable/roboto-flex/full.css';
+import '@fontsource-variable/noto-sans-jp';
 import '@fontsource-variable/jetbrains-mono';
 import '../styles/global.css';
 import { SITE } from '../lib/site';
@@ -63,8 +63,8 @@ const blog = lang === 'en' ? '/en/blog/' : '/blog/';
   </head>
   <body class="flex min-h-dvh flex-col antialiased">
     <header class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 px-6 pt-8 text-base sm:px-12">
-      <a href={home} class="font-mono text-muted hover:text-paper">gapul.net</a>
-      <nav class="flex items-baseline gap-4 text-muted sm:gap-5">
+      <a href={home} class="display text-muted hover:text-paper">gapul.net</a>
+      <nav class="display flex items-baseline gap-4 text-muted sm:gap-5">
         <a href={home} class:list={['capitalize hover:text-paper', path === home && 'text-paper']}>home</a>
         <a href={works} class:list={['capitalize hover:text-paper', path.startsWith(works) && 'text-paper']}>works</a>
         <a href={blog} class:list={['capitalize hover:text-paper', (path.startsWith('/blog') || path.startsWith('/en/blog')) && 'text-paper']}>blog</a>
